@@ -1,0 +1,11 @@
+[project]
+name = "waterclip-processor"
+version = "0.1.0"
+dependencies = [
+  "fastapi==0.136.3",
+  "uvicorn==0.38.0",
+  "pydantic==2.13.4",
+]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
