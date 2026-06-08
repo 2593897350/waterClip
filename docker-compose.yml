@@ -1,18 +1,26 @@
 services:
   web:
     build: ./web
-    ports: ["3000:3000"]
+    ports: ["${WEB_PORT:-3000}:3000"]
     environment:
-      NEXT_PUBLIC_API_BASE_URL: http://api:8080
+      INTERNAL_API_PROXY_TARGET: ${INTERNAL_API_PROXY_TARGET:-http://api:8080}
+    depends_on:
+      - api
+    restart: unless-stopped
   api:
     build: ./api
-    ports: ["8080:8080"]
+    expose: ["8080"]
     environment:
-      PROCESSOR_BASE_URL: http://processor:8000
+      API_ADDRESS: ${API_ADDRESS:-:8080}
+      PROCESSOR_BASE_URL: ${PROCESSOR_BASE_URL:-http://processor:8000}
+    depends_on:
+      - processor
+    restart: unless-stopped
     volumes:
       - ./var:/app/var
   processor:
     build: ./processor
-    ports: ["8000:8000"]
+    expose: ["8000"]
+    restart: unless-stopped
     volumes:
       - ./var:/app/var

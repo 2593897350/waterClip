@@ -9,8 +9,8 @@ import (
 )
 
 func main() {
-	cfg := config.Default()
-	if err := http.ListenAndServe(cfg.Address, httpx.NewRouter()); err != nil {
+	cfg := config.Load()
+	if err := http.ListenAndServe(cfg.Address, httpx.NewRouter(cfg.ProcessorBaseURL)); err != nil {
 		log.Fatal(err)
 	}
 }

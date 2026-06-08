@@ -6,7 +6,8 @@ COPY go.mod ./
 RUN go mod download || true
 
 COPY . .
+RUN go build -o /usr/local/bin/waterclip-api ./cmd/server
 
 EXPOSE 8080
 
-CMD ["go", "run", "./cmd/server"]
+CMD ["/usr/local/bin/waterclip-api"]

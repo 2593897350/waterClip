@@ -8,10 +8,10 @@ import (
 	processorclient "waterclip/api/internal/processor"
 )
 
-func NewRouter() http.Handler {
+func NewRouter(processorBaseURL string) http.Handler {
 	mux := http.NewServeMux()
 	store := jobs.NewMemoryStore()
-	processor := processorclient.New("http://localhost:8000")
+	processor := processorclient.New(processorBaseURL)
 	mux.Handle("/health", handlers.Health())
 	mux.Handle("/api/jobs/detect", handlers.NewDetectHandler(store, processor))
 	mux.Handle("/api/jobs/process", handlers.NewProcessHandler(store, processor))
