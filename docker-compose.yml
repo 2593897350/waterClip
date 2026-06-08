@@ -1,6 +1,8 @@
 services:
   web:
-    build: ./web
+    build:
+      context: .
+      dockerfile: web/Dockerfile
     ports: ["${WEB_PORT:-3000}:3000"]
     environment:
       INTERNAL_API_PROXY_TARGET: ${INTERNAL_API_PROXY_TARGET:-http://api:8080}
