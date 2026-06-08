@@ -1,5 +1,6 @@
 import { EditClient } from "../../../components/edit-client";
 
-export default function EditPage({ params }: { params: { jobId: string } }) {
-  return <EditClient jobId={params.jobId} />;
+export default async function EditPage({ params }: { params: Promise<{ jobId: string }> }) {
+  const { jobId } = await params;
+  return <EditClient jobId={jobId} />;
 }

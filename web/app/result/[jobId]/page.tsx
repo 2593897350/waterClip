@@ -1,5 +1,6 @@
 import { ResultClient } from "../../../components/result-client";
 
-export default function ResultPage({ params }: { params: { jobId: string } }) {
-  return <ResultClient jobId={params.jobId} />;
+export default async function ResultPage({ params }: { params: Promise<{ jobId: string }> }) {
+  const { jobId } = await params;
+  return <ResultClient jobId={jobId} />;
 }

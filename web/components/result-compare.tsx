@@ -1,3 +1,5 @@
+import React from "react";
+
 type ResultCompareProps = {
   originalUrl: string;
   resultUrl: string;
