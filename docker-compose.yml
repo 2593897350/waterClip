@@ -17,10 +17,10 @@ services:
       - processor
     restart: unless-stopped
     volumes:
-      - ./var:/app/var
+      - ./var:/app/var:Z
   processor:
     build: ./processor
     expose: ["8000"]
     restart: unless-stopped
     volumes:
-      - ./var:/app/var
+      - ./var:/app/var:Z

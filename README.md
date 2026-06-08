@@ -44,12 +44,42 @@
 5. 查看日志：
    `bash scripts/deploy.sh logs web`
 
+### CentOS Stream 9 一键初始化
+
+如果你的服务器是 `CentOS Stream 9`，可以直接使用：
+
+```bash
+bash scripts/init-server-centos9.sh --repo-url git@github.com:2593897350/waterClip.git
+```
+
+常用参数：
+
+- `--install-dir /opt/waterClip`：指定部署目录
+- `--web-port 3000`：指定对外暴露端口
+- `--skip-firewall`：跳过 `firewalld` 端口放行
+- `--skip-deploy`：只安装环境和拉代码，不执行部署
+- `--dry-run`：只打印命令，不真正执行
+
+示例：
+
+```bash
+bash scripts/init-server-centos9.sh \
+  --repo-url git@github.com:2593897350/waterClip.git \
+  --install-dir /opt/waterClip \
+  --web-port 3000
+```
+
+完整部署说明见：
+
+- [production-deploy-centos9.md](/Users/liuyafeng/workspace/waterClip/docs/production-deploy-centos9.md)
+
 ## 生产环境说明
 
 - 浏览器只访问 `web` 容器暴露出来的端口
 - `web` 会把 `/api/*` 代理到内部 `api` 容器
 - `api` 再通过 `PROCESSOR_BASE_URL` 调用 `processor`
 - 公网只需要暴露 Web 端口，不需要把 `api` 和 `processor` 直接暴露出去
+- 在 `CentOS Stream 9` / `SELinux Enforcing` 环境下，`docker-compose.yml` 已为 `var/` 挂载增加 `:Z`
 
 ## 说明
 
