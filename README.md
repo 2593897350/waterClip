@@ -1,32 +1,57 @@
 # WaterClip
 
-Services:
-- `web/`: Next.js frontend
-- `api/`: Go orchestration API
-- `processor/`: Python image-processing service
+一个面向照片和社交媒体图片的去水印网站 `MVP`。
 
-Local dev:
-1. Create a Python virtualenv: `python3 -m venv .venv`
-2. Install Python deps: `./.venv/bin/pip install fastapi httpx pytest uvicorn`
-3. Install frontend deps: `pnpm install --dir web`
-4. Start the processor: `cd processor && ../.venv/bin/uvicorn app.main:app --reload --port 8000`
-5. Start the API: `cd api && GOCACHE=/Users/liuyafeng/workspace/waterClip/.cache/go-build go run ./cmd/server`
-6. Start the web app: `cd web && pnpm dev`
+## 目录结构
 
-Tests:
-- Web: `cd web && pnpm test`
-- API: `cd api && GOCACHE=/Users/liuyafeng/workspace/waterClip/.cache/go-build go test ./...`
-- Processor: `cd processor && ../.venv/bin/pytest`
+- `web/`：`Next.js` 前端，负责上传、编辑和结果展示
+- `api/`：`Go` API 服务，负责任务编排、文件落盘和状态查询
+- `processor/`：`Python` 图像处理服务，负责检测和去水印修复
 
-Cloud deploy:
-1. Copy `.env.production.example` to `.env.production`
-2. Adjust `WEB_PORT` if you do not want to expose port `3000`
-3. Run `bash scripts/deploy.sh deploy`
-4. Check status with `bash scripts/deploy.sh status`
-5. Stream logs with `bash scripts/deploy.sh logs web`
+## 本地开发
 
-Production notes:
-- The browser only talks to the `web` container.
-- `web` proxies `/api/*` to the internal Go API via `INTERNAL_API_PROXY_TARGET`.
-- `api` talks to `processor` through `PROCESSOR_BASE_URL`.
-- For a public server, you only need to expose the web port.
+1. 创建 Python 虚拟环境：
+   `python3 -m venv .venv`
+2. 安装 Python 依赖：
+   `./.venv/bin/pip install fastapi httpx pytest uvicorn`
+3. 安装前端依赖：
+   `pnpm install --dir web`
+4. 启动图像处理服务：
+   `cd processor && ../.venv/bin/uvicorn app.main:app --reload --port 8000`
+5. 启动 API 服务：
+   `cd api && GOCACHE=/Users/liuyafeng/workspace/waterClip/.cache/go-build go run ./cmd/server`
+6. 启动前端：
+   `cd web && pnpm dev`
+
+## 测试命令
+
+- 前端测试：
+  `cd web && pnpm test`
+- API 测试：
+  `cd api && GOCACHE=/Users/liuyafeng/workspace/waterClip/.cache/go-build go test ./...`
+- 图像处理服务测试：
+  `cd processor && ../.venv/bin/pytest`
+
+## 云服务器部署
+
+1. 复制生产环境模板：
+   `cp .env.production.example .env.production`
+2. 按需修改 `.env.production`，例如 `WEB_PORT`
+3. 执行部署：
+   `bash scripts/deploy.sh deploy`
+4. 查看服务状态：
+   `bash scripts/deploy.sh status`
+5. 查看日志：
+   `bash scripts/deploy.sh logs web`
+
+## 生产环境说明
+
+- 浏览器只访问 `web` 容器暴露出来的端口
+- `web` 会把 `/api/*` 代理到内部 `api` 容器
+- `api` 再通过 `PROCESSOR_BASE_URL` 调用 `processor`
+- 公网只需要暴露 Web 端口，不需要把 `api` 和 `processor` 直接暴露出去
+
+## 说明
+
+- 仓库里的设计文档已经是中文
+- 从现在开始，新增的 `Markdown` 文档和 `Makefile` 注释默认优先使用中文
