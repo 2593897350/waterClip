@@ -3,5 +3,5 @@ dev:
 
 test:
 	pnpm test:web
-	cd api && go test ./...
-	cd processor && pytest
+	cd api && GOCACHE=/Users/liuyafeng/workspace/waterClip/.cache/go-build go test ./...
+	cd processor && ../.venv/bin/pytest

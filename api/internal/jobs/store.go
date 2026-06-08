@@ -24,6 +24,15 @@ func (s *MemoryStore) Create(kind, sourcePath string) Job {
 	return job
 }
 
+func (s *MemoryStore) Update(job Job) {
+	s.items[job.ID] = job
+}
+
+func (s *MemoryStore) Get(id string) (Job, bool) {
+	job, ok := s.items[id]
+	return job, ok
+}
+
 func newJobID() string {
 	bytes := make([]byte, 8)
 	_, _ = rand.Read(bytes)
