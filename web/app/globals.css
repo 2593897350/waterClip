@@ -1,0 +1,20 @@
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+  background: #f5f1e8;
+  color: #1f1a14;
+}
+
+main {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+form {
+  display: grid;
+  gap: 12px;
+  max-width: 420px;
+}
