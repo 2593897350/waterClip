@@ -1,8 +1,11 @@
-FROM golang:1.22-alpine
+FROM golang:1.22-bookworm
 
 WORKDIR /app
 
-RUN apk add --no-cache ca-certificates
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY go.mod ./
 RUN go mod download || true
