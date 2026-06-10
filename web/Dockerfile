@@ -3,7 +3,6 @@ FROM node:20-bookworm-slim
 WORKDIR /app
 
 ARG NPM_REGISTRY=https://registry.npmjs.org/
-ARG NPM_BOOTSTRAP_REGISTRY=https://registry.npmjs.org/
 ARG NPM_STRICT_SSL=true
 
 RUN apt-get update \
@@ -12,17 +11,13 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY web/package.json package.json
-COPY pnpm-lock.yaml pnpm-lock.yaml
 RUN npm config set registry "$NPM_REGISTRY" \
     && npm config set strict-ssl "$NPM_STRICT_SSL" \
-    && npm install -g pnpm --registry "$NPM_BOOTSTRAP_REGISTRY" \
-    && pnpm config set registry "$NPM_REGISTRY" \
-    && pnpm config set strict-ssl "$NPM_STRICT_SSL" \
-    && pnpm install --frozen-lockfile
+    && npm install
 
 COPY web .
-RUN pnpm build
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["pnpm", "start", "--hostname", "0.0.0.0", "--port", "3000"]
+CMD ["npm", "run", "start", "--", "--hostname", "0.0.0.0", "--port", "3000"]

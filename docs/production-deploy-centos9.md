@@ -85,7 +85,6 @@ API_ADDRESS=:8080
 INTERNAL_API_PROXY_TARGET=http://api:8080
 PROCESSOR_BASE_URL=http://processor:8000
 NPM_REGISTRY=https://registry.npmmirror.com
-NPM_BOOTSTRAP_REGISTRY=https://registry.npmjs.org/
 NPM_STRICT_SSL=false
 GOPROXY=https://goproxy.cn,direct
 GOSUMDB=sum.golang.google.cn
@@ -98,14 +97,13 @@ GOSUMDB=sum.golang.google.cn
 - `INTERNAL_API_PROXY_TARGET`：`web` 容器内访问 `api` 的地址
 - `PROCESSOR_BASE_URL`：`api` 容器内访问 `processor` 的地址
 - `NPM_REGISTRY`：前端构建时使用的 npm / pnpm 镜像源
-- `NPM_BOOTSTRAP_REGISTRY`：安装 `pnpm` 工具本身时使用的 npm 源
 - `NPM_STRICT_SSL`：前端依赖安装时是否严格校验证书
 - `GOPROXY` / `GOSUMDB`：Go 依赖下载与校验源
 
 说明：
 
 - 当前 `docker-compose.yml` 已经内置了上述镜像源默认值
-- 当前 `web` 会分开使用两个源：`pnpm` 工具本身默认走 `https://registry.npmjs.org/`，项目依赖默认走 `https://registry.npmmirror.com`
+- 当前 `web` 已改为直接使用 `npm` 安装依赖，不再依赖 `pnpm`
 - 当前 `docker-compose.yml` 里 `NPM_STRICT_SSL` 默认是 `false`，用于规避部分云环境下镜像站证书链不完整的问题
 - 当前 `processor` 已改为纯标准库 HTTP 服务，镜像构建时不再访问 PyPI
 - 即使你服务器上的 `.env.production` 是旧文件，只要里面没有手动写这些变量，也会自动使用镜像默认值
