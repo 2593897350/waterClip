@@ -88,8 +88,8 @@ NPM_REGISTRY=https://registry.npmmirror.com
 NPM_STRICT_SSL=false
 GOPROXY=https://goproxy.cn,direct
 GOSUMDB=sum.golang.google.cn
-PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
-PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn
+PIP_INDEX_URL=https://pypi.org/simple
+PIP_TRUSTED_HOSTS=pypi.org files.pythonhosted.org
 ```
 
 说明：
@@ -101,12 +101,13 @@ PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn
 - `NPM_REGISTRY`：前端构建时使用的 npm / pnpm 镜像源
 - `NPM_STRICT_SSL`：前端依赖安装时是否严格校验证书
 - `GOPROXY` / `GOSUMDB`：Go 依赖下载与校验源
-- `PIP_INDEX_URL` / `PIP_TRUSTED_HOST`：Python 依赖下载镜像与信任主机
+- `PIP_INDEX_URL` / `PIP_TRUSTED_HOSTS`：Python 依赖下载索引与信任主机列表
 
 说明：
 
 - 当前 `docker-compose.yml` 已经内置了上述镜像源默认值
 - 当前 `docker-compose.yml` 里 `NPM_STRICT_SSL` 默认是 `false`，用于规避部分云环境下镜像站证书链不完整的问题
+- 当前 `processor` 默认走官方 `PyPI`，并信任 `pypi.org` 与 `files.pythonhosted.org`
 - 即使你服务器上的 `.env.production` 是旧文件，只要里面没有手动写这些变量，也会自动使用镜像默认值
 - 如果你之前手动配置过官方源，请改成上面的值再重新部署
 
@@ -278,7 +279,7 @@ bash scripts/deploy.sh logs processor
 如果报错集中在 `pip install`、`pnpm install`、`go mod download` 这类依赖下载阶段，优先检查：
 
 ```bash
-grep -E 'NPM_REGISTRY|GOPROXY|GOSUMDB|PIP_INDEX_URL|PIP_TRUSTED_HOST' .env.production
+grep -E 'NPM_REGISTRY|GOPROXY|GOSUMDB|PIP_INDEX_URL|PIP_TRUSTED_HOSTS' .env.production
 docker compose --env-file .env.production config | sed -n '1,120p'
 ```
 

@@ -14,16 +14,17 @@ grep -F 'pnpm config set registry "$NPM_REGISTRY"' web/Dockerfile >/dev/null
 grep -F 'ARG GOPROXY=' api/Dockerfile >/dev/null
 grep -F 'go env -w GOPROXY="$GOPROXY"' api/Dockerfile >/dev/null
 grep -F 'ARG PIP_INDEX_URL=' processor/Dockerfile >/dev/null
-grep -F 'ARG PIP_TRUSTED_HOST=' processor/Dockerfile >/dev/null
-grep -F 'pip install --index-url "$PIP_INDEX_URL"' processor/Dockerfile >/dev/null
+grep -F 'ARG PIP_TRUSTED_HOSTS=' processor/Dockerfile >/dev/null
+grep -F 'set -- pip install --index-url "$PIP_INDEX_URL"' processor/Dockerfile >/dev/null
+grep -F 'for host in $PIP_TRUSTED_HOSTS; do' processor/Dockerfile >/dev/null
 grep -F 'NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmmirror.com}' docker-compose.yml >/dev/null
 grep -F 'NPM_STRICT_SSL: ${NPM_STRICT_SSL:-false}' docker-compose.yml >/dev/null
 grep -F 'GOPROXY: ${GOPROXY:-https://goproxy.cn,direct}' docker-compose.yml >/dev/null
-grep -F 'PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.tuna.tsinghua.edu.cn/simple}' docker-compose.yml >/dev/null
-grep -F 'PIP_TRUSTED_HOST: ${PIP_TRUSTED_HOST:-pypi.tuna.tsinghua.edu.cn}' docker-compose.yml >/dev/null
+grep -F 'PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.org/simple}' docker-compose.yml >/dev/null
+grep -F 'PIP_TRUSTED_HOSTS: ${PIP_TRUSTED_HOSTS:-pypi.org files.pythonhosted.org}' docker-compose.yml >/dev/null
 grep -F 'NPM_REGISTRY=https://registry.npmmirror.com' .env.production.example >/dev/null
 grep -F 'NPM_STRICT_SSL=false' .env.production.example >/dev/null
 grep -F 'GOPROXY=https://goproxy.cn,direct' .env.production.example >/dev/null
 grep -F 'GOSUMDB=sum.golang.google.cn' .env.production.example >/dev/null
-grep -F 'PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple' .env.production.example >/dev/null
-grep -F 'PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn' .env.production.example >/dev/null
+grep -F 'PIP_INDEX_URL=https://pypi.org/simple' .env.production.example >/dev/null
+grep -F 'PIP_TRUSTED_HOSTS=pypi.org files.pythonhosted.org' .env.production.example >/dev/null
