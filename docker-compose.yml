@@ -28,11 +28,7 @@ services:
     volumes:
       - ./var:/app/var:Z
   processor:
-    build:
-      context: ./processor
-      args:
-        PIP_INDEX_URL: ${PIP_INDEX_URL:-https://pypi.org/simple}
-        PIP_TRUSTED_HOSTS: ${PIP_TRUSTED_HOSTS:-pypi.org files.pythonhosted.org}
+    build: ./processor
     expose: ["8000"]
     restart: unless-stopped
     volumes:

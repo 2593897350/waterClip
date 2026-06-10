@@ -1,27 +1,54 @@
-from pydantic import BaseModel
+from dataclasses import asdict, dataclass
+from typing import Any
 
 
-class Bounds(BaseModel):
+@dataclass
+class Bounds:
     x: int
     y: int
     width: int
     height: int
 
+    def to_dict(self) -> dict[str, int]:
+        return asdict(self)
 
-class DetectRequest(BaseModel):
+
+@dataclass
+class DetectRequest:
     image_path: str
 
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "DetectRequest":
+        return cls(image_path=str(payload["image_path"]))
 
-class DetectResponse(BaseModel):
+
+@dataclass
+class DetectResponse:
     mask_path: str
     bounds: Bounds
 
+    def to_dict(self) -> dict[str, Any]:
+        return {"mask_path": self.mask_path, "bounds": self.bounds.to_dict()}
 
-class InpaintRequest(BaseModel):
+
+@dataclass
+class InpaintRequest:
     image_path: str
     mask_path: str
     mode: str
 
+    @classmethod
+    def from_dict(cls, payload: dict[str, Any]) -> "InpaintRequest":
+        return cls(
+            image_path=str(payload["image_path"]),
+            mask_path=str(payload["mask_path"]),
+            mode=str(payload["mode"]),
+        )
 
-class InpaintResponse(BaseModel):
+
+@dataclass
+class InpaintResponse:
     output_path: str
+
+    def to_dict(self) -> dict[str, str]:
+        return {"output_path": self.output_path}
