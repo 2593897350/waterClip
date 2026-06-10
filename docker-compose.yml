@@ -5,6 +5,7 @@ services:
       dockerfile: web/Dockerfile
       args:
         NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmmirror.com}
+        NPM_STRICT_SSL: ${NPM_STRICT_SSL:-false}
     ports: ["${WEB_PORT:-3000}:3000"]
     environment:
       INTERNAL_API_PROXY_TARGET: ${INTERNAL_API_PROXY_TARGET:-http://api:8080}

@@ -3,6 +3,7 @@ FROM node:20-bookworm-slim
 WORKDIR /app
 
 ARG NPM_REGISTRY=https://registry.npmjs.org/
+ARG NPM_STRICT_SSL=true
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \
@@ -12,8 +13,10 @@ RUN apt-get update \
 COPY web/package.json package.json
 COPY pnpm-lock.yaml pnpm-lock.yaml
 RUN npm config set registry "$NPM_REGISTRY" \
+    && npm config set strict-ssl "$NPM_STRICT_SSL" \
     && npm install -g pnpm \
     && pnpm config set registry "$NPM_REGISTRY" \
+    && pnpm config set strict-ssl "$NPM_STRICT_SSL" \
     && pnpm install --frozen-lockfile
 
 COPY web .

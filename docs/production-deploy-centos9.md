@@ -85,6 +85,7 @@ API_ADDRESS=:8080
 INTERNAL_API_PROXY_TARGET=http://api:8080
 PROCESSOR_BASE_URL=http://processor:8000
 NPM_REGISTRY=https://registry.npmmirror.com
+NPM_STRICT_SSL=false
 GOPROXY=https://goproxy.cn,direct
 GOSUMDB=sum.golang.google.cn
 PIP_INDEX_URL=https://pypi.tuna.tsinghua.edu.cn/simple
@@ -98,12 +99,14 @@ PIP_TRUSTED_HOST=pypi.tuna.tsinghua.edu.cn
 - `INTERNAL_API_PROXY_TARGET`：`web` 容器内访问 `api` 的地址
 - `PROCESSOR_BASE_URL`：`api` 容器内访问 `processor` 的地址
 - `NPM_REGISTRY`：前端构建时使用的 npm / pnpm 镜像源
+- `NPM_STRICT_SSL`：前端依赖安装时是否严格校验证书
 - `GOPROXY` / `GOSUMDB`：Go 依赖下载与校验源
 - `PIP_INDEX_URL` / `PIP_TRUSTED_HOST`：Python 依赖下载镜像与信任主机
 
 说明：
 
 - 当前 `docker-compose.yml` 已经内置了上述镜像源默认值
+- 当前 `docker-compose.yml` 里 `NPM_STRICT_SSL` 默认是 `false`，用于规避部分云环境下镜像站证书链不完整的问题
 - 即使你服务器上的 `.env.production` 是旧文件，只要里面没有手动写这些变量，也会自动使用镜像默认值
 - 如果你之前手动配置过官方源，请改成上面的值再重新部署
 
