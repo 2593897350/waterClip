@@ -2,6 +2,8 @@ FROM node:20-bookworm-slim
 
 WORKDIR /app
 
+ARG NPM_REGISTRY=https://registry.npmjs.org/
+
 RUN apt-get update \
     && apt-get install -y --no-install-recommends ca-certificates \
     && update-ca-certificates \
@@ -9,7 +11,10 @@ RUN apt-get update \
 
 COPY web/package.json package.json
 COPY pnpm-lock.yaml pnpm-lock.yaml
-RUN npm install -g pnpm && pnpm install --frozen-lockfile
+RUN npm config set registry "$NPM_REGISTRY" \
+    && npm install -g pnpm \
+    && pnpm config set registry "$NPM_REGISTRY" \
+    && pnpm install --frozen-lockfile
 
 COPY web .
 RUN pnpm build
