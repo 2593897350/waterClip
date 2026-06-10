@@ -11,6 +11,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY web/package.json package.json
+COPY web/package.docker.json package.json
 RUN npm config set registry "$NPM_REGISTRY" \
     && npm config set strict-ssl "$NPM_STRICT_SSL" \
     && npm install

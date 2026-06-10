@@ -17,6 +17,7 @@ if grep -F 'pnpm' web/Dockerfile >/dev/null; then
   echo "web Dockerfile should not depend on pnpm" >&2
   exit 1
 fi
+grep -F 'COPY web/package.docker.json package.json' web/Dockerfile >/dev/null
 grep -F 'npm install' web/Dockerfile >/dev/null
 grep -F 'RUN npm run build' web/Dockerfile >/dev/null
 grep -F 'CMD ["npm", "run", "start", "--", "--hostname", "0.0.0.0", "--port", "3000"]' web/Dockerfile >/dev/null
@@ -29,6 +30,14 @@ grep -F 'NPM_REGISTRY=https://registry.npmmirror.com' .env.production.example >/
 grep -F 'NPM_STRICT_SSL=false' .env.production.example >/dev/null
 grep -F 'GOPROXY=https://goproxy.cn,direct' .env.production.example >/dev/null
 grep -F 'GOSUMDB=sum.golang.google.cn' .env.production.example >/dev/null
+if grep -F '@testing-library/jest-dom' web/package.docker.json >/dev/null; then
+  echo "web/package.docker.json should not include test-only dependencies" >&2
+  exit 1
+fi
+if grep -F 'vitest' web/package.docker.json >/dev/null; then
+  echo "web/package.docker.json should not include test runners" >&2
+  exit 1
+fi
 if grep -F 'fastapi' processor/pyproject.toml >/dev/null; then
   echo "processor should not depend on fastapi" >&2
   exit 1
