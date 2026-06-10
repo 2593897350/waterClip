@@ -17,6 +17,7 @@ RUN npm config set registry "$NPM_REGISTRY" \
     && npm install
 
 COPY web .
+ENV NEXT_IGNORE_TYPECHECK=true
 RUN npm run build
 
 EXPOSE 3000

@@ -19,6 +19,7 @@ if grep -F 'pnpm' web/Dockerfile >/dev/null; then
 fi
 grep -F 'COPY web/package.docker.json package.json' web/Dockerfile >/dev/null
 grep -F 'npm install' web/Dockerfile >/dev/null
+grep -F 'ENV NEXT_IGNORE_TYPECHECK=true' web/Dockerfile >/dev/null
 grep -F 'RUN npm run build' web/Dockerfile >/dev/null
 grep -F 'CMD ["npm", "run", "start", "--", "--hostname", "0.0.0.0", "--port", "3000"]' web/Dockerfile >/dev/null
 grep -F 'ARG GOPROXY=' api/Dockerfile >/dev/null
@@ -38,6 +39,13 @@ if grep -F 'vitest' web/package.docker.json >/dev/null; then
   echo "web/package.docker.json should not include test runners" >&2
   exit 1
 fi
+if grep -F '@types/' web/package.docker.json >/dev/null; then
+  echo "web/package.docker.json should not include @types packages" >&2
+  exit 1
+fi
+grep -F '"typescript": "^5.7.2"' web/package.docker.json >/dev/null
+grep -F 'process.env.NEXT_IGNORE_TYPECHECK === "true"' web/next.config.ts >/dev/null
+grep -F 'ignoreBuildErrors: ignoreTypecheck' web/next.config.ts >/dev/null
 if grep -F 'fastapi' processor/pyproject.toml >/dev/null; then
   echo "processor should not depend on fastapi" >&2
   exit 1

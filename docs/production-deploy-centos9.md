@@ -105,6 +105,7 @@ GOSUMDB=sum.golang.google.cn
 - 当前 `docker-compose.yml` 已经内置了上述镜像源默认值
 - 当前 `web` 已改为直接使用 `npm` 安装依赖，不再依赖 `pnpm`
 - 当前 `web` 的 Docker 构建会使用 `web/package.docker.json`，只安装生产构建所需依赖，不安装测试依赖
+- 当前 `web` 的 Docker 构建会设置 `NEXT_IGNORE_TYPECHECK=true`，跳过类型报错校验，只保留 `typescript` 作为构建所需最小依赖
 - 当前 `docker-compose.yml` 里 `NPM_STRICT_SSL` 默认是 `false`，用于规避部分云环境下镜像站证书链不完整的问题
 - 当前 `processor` 已改为纯标准库 HTTP 服务，镜像构建时不再访问 PyPI
 - 即使你服务器上的 `.env.production` 是旧文件，只要里面没有手动写这些变量，也会自动使用镜像默认值
